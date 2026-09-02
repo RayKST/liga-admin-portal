@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env
+.env.*
+README.md
+
+node_modules
+vendor
+
+public/uploads/*
