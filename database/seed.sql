@@ -315,3 +315,6 @@ VALUES
     'https://images.ygoprodeck.com/images/cards/24299458.jpg',
     'Ultra Rare'
 );
+
+
+insert into users (email, password) values ('admin@example.com', '$2y$12$Lvd/vKCc6sW3buMYSk31TeA5Uo2eveWiEl180.2nJiMVIcp/CP3D2');
