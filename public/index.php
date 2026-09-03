@@ -1,4 +1,7 @@
 <?php
+require __DIR__ . '/../src/middleware/auth.php';
+
+requireAuthentication();
 
 try {
     $db = require __DIR__ . '/../src/config/database.php';
