@@ -5,12 +5,11 @@ const cardCount = document.querySelector('#card-count');
 
 
 function renderCards(cards) {
-    const grid = document.querySelector('#cards-grid');
-    console.log(cards.data)
-    grid.innerHTML = '';
+    
+    cardsGrid.innerHTML = '';
 
     if (cards.length === 0) {
-        grid.innerHTML = `
+        cardsGrid.innerHTML = `
             <div class="empty-state">
                 <h3>No cards found</h3>
                 <p>Try changing your filters.</p>
@@ -83,7 +82,7 @@ function renderCards(cards) {
             </div>
         `;
 
-        grid.appendChild(article);
+        cardsGrid.appendChild(article);
     });
 }
 
@@ -103,7 +102,7 @@ async function fetchCards() {
 
         renderCards(data);
 
-        cardCount.textContent = `${data.length} cards`;
+        cardCount.textContent = `${data.data.length} cards`;
 
     } catch (error) {
         console.error(error);

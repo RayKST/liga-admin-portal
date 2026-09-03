@@ -1,8 +1,8 @@
 <?php
 
-// require __DIR__ . '/../src/middleware/auth.php';
+require __DIR__ . '/../src/middleware/auth.php';
 
-// requireAuthentication();
+requireAuthentication();
 
 ?>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
 
     <title>Card Portal</title>
 
-    <link rel="stylesheet" href=".assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/index.css">
 </head>
 
 <body>

@@ -6,7 +6,12 @@ function requireAuthentication(): void
         session_start();
     }
 
-    if (!isset($_SESSION['user_id'])) {
+    if (isset($_SESSION['user_id'])) {
+        return;
+    }
+
+    // API request
+    if (str_starts_with($_SERVER['REQUEST_URI'], '/api/')) {
         header('Content-Type: application/json');
 
         http_response_code(401);
@@ -17,4 +22,8 @@ function requireAuthentication(): void
 
         exit;
     }
+
+    // Normal page request
+    header('Location: /login.php');
+    exit;
 }

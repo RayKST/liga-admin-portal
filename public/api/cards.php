@@ -1,8 +1,10 @@
 <?php
 
-// require __DIR__ . '/../src/middleware/auth.php';
+require __DIR__ . '/../../src/middleware/auth.php';
 
-// requireAuthentication();
+requireAuthentication();
+
+header('Content-Type: application/json');
 
 $pdo = require_once __DIR__ . '/../../src/config/database.php';
 
