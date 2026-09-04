@@ -408,3 +408,47 @@ if ($method === 'PUT') {
 
     exit;
 }
+
+
+if ($method === 'DELETE') {
+
+    $cardId = $_GET['id'] ?? null;
+
+    // Validate ID
+    if (!$cardId || !ctype_digit($cardId)) {
+        http_response_code(400);
+
+        echo json_encode([
+            'error' => 'Invalid card ID'
+        ]);
+
+        exit;
+    }
+
+    $cardId = (int) $cardId;
+
+    $stmt = $pdo->prepare(
+        'DELETE FROM cards WHERE id = :id'
+    );
+
+    $stmt->execute([
+        'id' => $cardId
+    ]);
+
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+
+        echo json_encode([
+            'error' => 'Card not found'
+        ]);
+
+        exit;
+    }
+
+    // Success
+    echo json_encode([
+        'message' => 'Card deleted successfully'
+    ]);
+
+    exit;
+}

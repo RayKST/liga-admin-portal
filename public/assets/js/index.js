@@ -8,7 +8,7 @@ function renderCards(cards) {
     
     cardsGrid.innerHTML = '';
 
-    if (cards.length === 0) {
+    if (cards.data.length === 0) {
         cardsGrid.innerHTML = `
             <div class="empty-state">
                 <h3>No cards found</h3>
@@ -71,8 +71,8 @@ function renderCards(cards) {
                     </a>
 
                     <button
-                        class="button button-danger"
-                        data-delete="${card.id}"
+                        class="button button-danger delete-card"
+                        data-id="${card.id}"
                     >
                         Delete
                     </button>
@@ -81,6 +81,12 @@ function renderCards(cards) {
 
             </div>
         `;
+
+        const deleteButton = article.querySelector('.delete-card');
+
+        deleteButton.addEventListener('click', () => {
+            deleteCard(card.id);
+        });
 
         cardsGrid.appendChild(article);
     });
@@ -115,6 +121,43 @@ async function fetchCards() {
     } finally {
         cardsLoading.hidden = true;
         cardsGrid.hidden = false;
+    }
+}
+
+async function deleteCard(cardId) {
+    const confirmed = confirm(
+        'Are you sure you want to delete this card?'
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/api/cards.php?id=${cardId}`,
+            {
+                method: 'DELETE'
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || 'Failed to delete card'
+            );
+        }
+
+        await fetchCards();
+
+    } catch (error) {
+        console.error(error);
+
+        cardsError.textContent =
+            'Unable to delete card. Please try again.';
+
+        cardsError.hidden = false;
     }
 }
 
