@@ -5,104 +5,145 @@ require __DIR__ . '/../src/middleware/auth.php';
 requireAuthentication();
 
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="pt-BR">
 
-    <title>Card Portal</title>
+    <head>
 
-    <link rel="stylesheet" href="./assets/css/index.css">
-</head>
+        <meta charset="UTF-8">
 
-<body>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
 
-    <header class="header">
-        <div class="container header-content">
+        <title>Card Portal - Liga Magic</title>
 
-            <a href="/" class="logo">
+        <link
+            rel="stylesheet"
+            href="/assets/css/global.css"
+        >
+
+        <link
+            rel="stylesheet"
+            href="/assets/css/index.css"
+        >
+
+    </head>
+
+    <body>
+
+    <header class="site-header">
+
+        <div class="header-content">
+
+            <a
+                href="/"
+                class="logo"
+            >
                 Card Portal
             </a>
 
-            <div class="user-menu">
-                <span>
+
+            <div class="header-user">
+
+                <span class="user-email">
                     <?= htmlspecialchars($_SESSION['user_email']) ?>
                 </span>
 
-                <button id="logout-button">
-                    Logout
+                <button
+                    id="logout-button"
+                    class="button button-secondary"
+                    type="button"
+                >
+                    Sair
                 </button>
+
             </div>
 
         </div>
+
     </header>
 
 
-    <main class="container">
+    <main class="main-content">
 
         <section class="page-header">
 
-            <div>
-                <h1>Card Manager</h1>
+            <div class="page-header-info">
+
+                <span class="page-eyebrow">
+                    Liga Magic
+                </span>
+
+                <h1>
+                    Card Manager
+                </h1>
 
                 <p>
-                    Manage your card collection
+                    Gerencie sua coleção de cards.
                 </p>
+
             </div>
 
-            <a href="/card-create.php" class="button">
-                + Add Card
+
+            <a
+                href="/card-create.php"
+                class="button button-primary"
+            >
+                <span class="button-icon">+</span>
+                Adicionar Card
             </a>
 
         </section>
 
 
-        <section class="filters">
+        <section class="cards-section">
 
-            <input
-                type="search"
-                id="search"
-                placeholder="Search cards..."
-            >
-
-            <select id="game-filter">
-                <option value="">All games</option>
-                <option value="magic">Magic</option>
-                <option value="pokemon">Pokémon</option>
-                <option value="yugioh">Yu-Gi-Oh!</option>
-            </select>
-
-            <select id="rarity-filter">
-                <option value="">All rarities</option>
-                <option value="common">Common</option>
-                <option value="uncommon">Uncommon</option>
-                <option value="rare">Rare</option>
-                <option value="mythic">Mythic Rare</option>
-            </select>
-
-        </section>
-
-
-        <section>
             <div class="cards-header">
-                <h2>Cards</h2>
-                <span id="card-count"></span>
+
+                <div>
+
+                    <h2>
+                        Cards
+                    </h2>
+
+                    <p>
+                        Sua coleção
+                    </p>
+
+                </div>
+
+
+                <span id="card-count">
+                    Loading...
+                </span>
+
             </div>
 
-            <div id="cards-loading" class="loading">
-                Loading cards...
-            </div>
 
-            <div id="cards-grid" class="cards-grid"></div>
+            <div
+                id="cards-grid"
+                class="cards-grid"
+            ></div>
 
-            <div id="cards-error" class="error-message"></div>
+
+            <div
+                id="cards-error"
+                class="error-message"
+            ></div>
+
         </section>
 
     </main>
 
 
+    <?php require __DIR__ . '/components/footer.php'; ?>
+
+
     <script src="/assets/js/index.js"></script>
 
-</body>
+    </body>
+
 </html>

@@ -1,14 +1,22 @@
 const cardsGrid = document.querySelector('#cards-grid');
-const cardsLoading = document.querySelector('#cards-loading');
 const cardsError = document.querySelector('#cards-error');
 const cardCount = document.querySelector('#card-count');
 
 
+function escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value ?? '';
+
+    return div.innerHTML;
+}
+
+
 function renderCards(cards) {
-    
+
     cardsGrid.innerHTML = '';
 
-    if (cards.data.length === 0) {
+    if (cards.length === 0) {
+
         cardsGrid.innerHTML = `
             <div class="empty-state">
                 <h3>No cards found</h3>
@@ -19,62 +27,120 @@ function renderCards(cards) {
         return;
     }
 
-    cards.data.forEach(card => {
+
+    cards.forEach(card => {
+
         const article = document.createElement('article');
 
         article.className = 'card';
 
+
         article.innerHTML = `
             <div class="card-image">
+
                 ${
                     card.image
-                        ? `<img src="${card.image}" alt="${(card.name_en)}">`
-                        : `<div class="no-image">No image</div>`
+                        ? `
+                            <img
+                                src="${escapeHtml(card.image)}"
+                                alt="${escapeHtml(card.name_en)}"
+                            >
+                        `
+                        : `
+                            <div class="no-image">
+                                No image
+                            </div>
+                        `
                 }
+
             </div>
+
 
             <div class="card-content">
 
-                <h3>${(card.name_en)}</h3>
+                <h3>
+                    ${escapeHtml(card.name_en)}
+                </h3>
 
-                ${
-                    card.name_pt
-                        ? `<p class="name-pt">
-                            ${(card.name_pt)}
-                           </p>`
-                        : ''
-                }
 
-                <div class="card-details">
+                <div class="card-meta">
 
-                    <span>
-                        ${(card.card_game)}
-                    </span>
+                    ${
+                        card.name_pt
+                            ? `
+                                <div class="card-meta-item">
 
-                    <span>
-                        ${(card.edition_name)}
-                    </span>
+                                    <span class="card-meta-label">
+                                        Nome em português
+                                    </span>
 
-                    <span>
-                        ${(card.rarity)}
-                    </span>
+                                    <span class="card-meta-value secondary">
+                                        ${escapeHtml(card.name_pt)}
+                                    </span>
+
+                                </div>
+                            `
+                            : ''
+                    }
+
+
+                    <div class="card-meta-item">
+
+                        <span class="card-meta-label">
+                            Jogo
+                        </span>
+
+                        <span class="card-meta-value">
+                            ${escapeHtml(card.card_game)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-meta-item">
+
+                        <span class="card-meta-label">
+                            Edição
+                        </span>
+
+                        <span class="card-meta-value">
+                            ${escapeHtml(card.edition_name)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-meta-item">
+
+                        <span class="card-meta-label">
+                            Raridade
+                        </span>
+
+                        <span class="card-meta-value">
+                            ${escapeHtml(card.rarity)}
+                        </span>
+
+                    </div>
 
                 </div>
+
 
                 <div class="card-actions">
 
                     <a
-                        href="/card-edit.php?id=${card.id}"
-                        class="button"
+                        href="/card-edit.php?id=${encodeURIComponent(card.id)}"
+                        class="button button-secondary"
                     >
-                        Edit
+                        Editar
                     </a>
+
 
                     <button
                         class="button button-danger delete-card"
-                        data-id="${card.id}"
+                        data-card-id="${escapeHtml(card.id)}"
+                        type="button"
                     >
-                        Delete
+                        Excluir
                     </button>
 
                 </div>
@@ -82,47 +148,65 @@ function renderCards(cards) {
             </div>
         `;
 
+
         const deleteButton = article.querySelector('.delete-card');
+
 
         deleteButton.addEventListener('click', () => {
             deleteCard(card.id);
         });
 
+
         cardsGrid.appendChild(article);
     });
 }
 
+
 async function fetchCards() {
-    cardsLoading.hidden = false;
+
     cardsGrid.hidden = true;
     cardsError.hidden = true;
 
-    try {
-        const response = await fetch('/api/cards.php');
 
+    try {
+
+        const response = await fetch('/api/cards.php');
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.error || 'Failed to fetch cards');
+            throw new Error(
+                data.error || 'Failed to fetch cards'
+            );
         }
 
-        renderCards(data);
+        const cards = Array.isArray(data) ? data : data.data;
 
-        cardCount.textContent = `${data.data.length} cards`;
+        if (!Array.isArray(cards)) {
+            throw new Error(
+                'Invalid cards response'
+            );
+        }
+
+
+        renderCards(cards);
+
+
+        cardCount.textContent = `${cards.length} cards`;
+
 
     } catch (error) {
+
         console.error(error);
 
-        cardsError.textContent =
-            'Unable to load cards. Please try again.';
+        cardsError.textContent = 'Unable to load cards. Please try again.';
 
         cardsError.hidden = false;
 
     } finally {
-        cardsLoading.hidden = true;
         cardsGrid.hidden = false;
     }
 }
+
 
 async function deleteCard(cardId) {
     const confirmed = confirm(
@@ -134,14 +218,16 @@ async function deleteCard(cardId) {
     }
 
     try {
-        const response = await fetch(
-            `/api/cards.php?id=${cardId}`,
-            {
-                method: 'DELETE'
-            }
-        );
+        const response =
+            await fetch(
+                `/api/cards.php?id=${encodeURIComponent(cardId)}`,
+                {
+                    method: 'DELETE'
+                }
+            );
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
         if (!response.ok) {
             throw new Error(
@@ -150,15 +236,16 @@ async function deleteCard(cardId) {
         }
 
         await fetchCards();
+    } 
+    catch (error) {
 
-    } catch (error) {
         console.error(error);
 
         cardsError.textContent =
             'Unable to delete card. Please try again.';
-
         cardsError.hidden = false;
     }
 }
+
 
 fetchCards();
