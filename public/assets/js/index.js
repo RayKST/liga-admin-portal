@@ -1,6 +1,7 @@
 const cardsGrid = document.querySelector('#cards-grid');
 const cardsError = document.querySelector('#cards-error');
 const cardCount = document.querySelector('#card-count');
+const logoutButton = document.getElementById('logout-button');
 
 
 function escapeHtml(value) {
@@ -247,5 +248,42 @@ async function deleteCard(cardId) {
     }
 }
 
+logoutButton.addEventListener('click', async () => {
+    
+    
+    const confirmed = confirm(
+        'Are you sure you want to logout?'
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    logoutButton.disabled = true;
+
+    try {
+        const response = await fetch('/api/logout.php', {
+            method: 'POST',
+            credentials: 'same-origin'
+        });
+
+        if (!response.ok) {
+            throw new Error('Logout failed');
+        }
+
+        const data = await response.json();
+
+        if (!data.authenticated) {
+            window.location.href = '/login.php';
+            return;
+        }
+
+        throw new Error('Logout failed');
+
+    } catch (error) {
+        console.error(error);
+        logoutButton.disabled = false;
+    }
+});
 
 fetchCards();
