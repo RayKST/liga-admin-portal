@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/../../src/middleware/auth.php';
+require __DIR__ . '/validators/card-validator.php';
 
 requireAuthentication();
 
@@ -50,95 +51,26 @@ if ($method === 'POST') {
         exit;
     }
 
+    $validation = validateCard($input);
 
-    $nameEn = trim($input['name_en'] ?? '');
-    $namePt = trim($input['name_pt'] ?? '');
-    $cardGame = $input['card_game'] ?? '';
-    $editionId = $input['edition_id'] ?? '';
-    $image = trim($input['image'] ?? '');
-    $rarity = trim($input['rarity'] ?? '');
-
-
-    // Validation
-
-    if ($nameEn === '') {
-
+    if (isset($validation['error'])) {
         http_response_code(422);
 
         echo json_encode([
-            'error' => 'English name is required'
+            'error' => $validation['error']
         ]);
 
         exit;
     }
 
+    $card = $validation['data'];
 
-    if (!in_array(
-        $cardGame,
-        ['magic', 'pokemon', 'yugioh'],
-        true
-    )) {
-
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Invalid card game'
-        ]);
-
-        exit;
-    }
-
-
-    if ($editionId === '') {
-
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Edition is required'
-        ]);
-
-        exit;
-    }
-
-
-    if ($rarity === '') {
-
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Rarity is required'
-        ]);
-
-        exit;
-    }
-
-
-    $editionsPath = __DIR__ . '/../../utils/editions.json';
-
-    $editionsJson = file_get_contents($editionsPath);
-
-    $editions = json_decode(
-        $editionsJson,
-        true
+    $editionName = validateEdition(
+        $card['card_game'],
+        $card['edition_id']
     );
 
-
-    $editionName = null;
-
-
-    foreach ($editions[$cardGame] ?? [] as $edition) {
-
-        if ($edition['id'] === $editionId) {
-
-            $editionName = $edition['name'];
-
-            break;
-        }
-    }
-
-
     if ($editionName === null) {
-
         http_response_code(422);
 
         echo json_encode([
@@ -154,47 +86,34 @@ if ($method === 'POST') {
      */
 
     $stmt = $pdo->prepare(
-        'INSERT INTO cards (
-            name_en,
-            name_pt,
-            card_game,
-            edition_id,
-            edition_name,
-            image,
-            rarity
-        )
-        VALUES (
-            :name_en,
-            :name_pt,
-            :card_game,
-            :edition_id,
-            :edition_name,
-            :image,
-            :rarity
+    'INSERT INTO cards (
+        name_en,
+        name_pt,
+        card_game,
+        edition_id,
+        edition_name,
+        image,
+        rarity
+    )
+    VALUES (
+        :name_en,
+        :name_pt,
+        :card_game,
+        :edition_id,
+        :edition_name,
+        :image,
+        :rarity
         )'
     );
 
-
     $stmt->execute([
-
-        'name_en' => $nameEn,
-
-        'name_pt' => $namePt !== ''
-            ? $namePt
-            : null,
-
-        'card_game' => $cardGame,
-
-        'edition_id' => $editionId,
-
+        'name_en' => $card['name_en'],
+        'name_pt' => $card['name_pt'],
+        'card_game' => $card['card_game'],
+        'edition_id' => $card['edition_id'],
         'edition_name' => $editionName,
-
-        'image' => $image !== ''
-            ? $image
-            : null,
-
-        'rarity' => $rarity
-
+        'image' => $card['image'],
+        'rarity' => $card['rarity']
     ]);
 
 
@@ -209,17 +128,13 @@ if ($method === 'POST') {
 
         'card' => [
             'id' => $cardId,
-            'name_en' => $nameEn,
-            'name_pt' => $namePt !== ''
-                ? $namePt
-                : null,
-            'card_game' => $cardGame,
-            'edition_id' => $editionId,
+            'name_en' => $card['name_en'],
+            'name_pt' => $card['name_pt'],
+            'card_game' => $card['card_game'],
+            'edition_id' => $card['edition_id'],
             'edition_name' => $editionName,
-            'image' => $image !== ''
-                ? $image
-                : null,
-            'rarity' => $rarity
+            'image' => $card['image'],
+            'rarity' => $card['rarity']
         ]
 
     ]);
@@ -263,83 +178,24 @@ if ($method === 'PUT') {
     }
 
 
-    // Same validation as POST
+    $validation = validateCard($input);
 
-    $nameEn = trim($input['name_en'] ?? '');
-    $namePt = trim($input['name_pt'] ?? '');
-    $cardGame = $input['card_game'] ?? '';
-    $editionId = $input['edition_id'] ?? '';
-    $image = trim($input['image'] ?? '');
-    $rarity = trim($input['rarity'] ?? '');
-
-
-    if ($nameEn === '') {
+    if (isset($validation['error'])) {
         http_response_code(422);
 
         echo json_encode([
-            'error' => 'English name is required'
+            'error' => $validation['error']
         ]);
 
         exit;
     }
 
+    $card = $validation['data'];
 
-    if (!in_array(
-        $cardGame,
-        ['magic', 'pokemon', 'yugioh'],
-        true
-    )) {
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Invalid card game'
-        ]);
-
-        exit;
-    }
-
-
-    if ($editionId === '') {
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Edition is required'
-        ]);
-
-        exit;
-    }
-
-
-    if ($rarity === '') {
-        http_response_code(422);
-
-        echo json_encode([
-            'error' => 'Rarity is required'
-        ]);
-
-        exit;
-    }
-
-
-    // Get edition name from JSON
-
-    $editionsPath = __DIR__ . '/../../utils/editions.json';
-
-    $editions = json_decode(
-        file_get_contents($editionsPath),
-        true
+    $editionName = validateEdition(
+        $card['card_game'],
+        $card['edition_id']
     );
-
-    $editionName = null;
-
-    foreach ($editions[$cardGame] ?? [] as $edition) {
-
-        if ($edition['id'] === $editionId) {
-            $editionName = $edition['name'];
-            break;
-        }
-    }
-
 
     if ($editionName === null) {
         http_response_code(422);
@@ -356,7 +212,7 @@ if ($method === 'PUT') {
 
     $stmt = $pdo->prepare(
         'UPDATE cards
-         SET
+            SET
             name_en = :name_en,
             name_pt = :name_pt,
             card_game = :card_game,
@@ -364,17 +220,17 @@ if ($method === 'PUT') {
             edition_name = :edition_name,
             image = :image,
             rarity = :rarity
-         WHERE id = :id'
+        WHERE id = :id'
     );
 
     $stmt->execute([
-        'name_en' => $nameEn,
-        'name_pt' => $namePt !== '' ? $namePt : null,
-        'card_game' => $cardGame,
-        'edition_id' => $editionId,
+        'name_en' => $card['name_en'],
+        'name_pt' => $card['name_pt'],
+        'card_game' => $card['card_game'],
+        'edition_id' => $card['edition_id'],
         'edition_name' => $editionName,
-        'image' => $image !== '' ? $image : null,
-        'rarity' => $rarity,
+        'image' => $card['image'],
+        'rarity' => $card['rarity'],
         'id' => $cardId
     ]);
 
