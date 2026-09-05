@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/../src/middleware/auth.php';
+
 $pdo = require __DIR__ . '/../src/config/database.php';
 
 requireAuthentication();
@@ -42,8 +43,10 @@ $mode = 'edit';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
+
+<html lang="pt-BR">
+    <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -51,56 +54,84 @@ $mode = 'edit';
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Edit Card - Card Portal</title>
+    <title>Editar Card - Card Portal</title>
 
     <link
         rel="stylesheet"
-        href="/assets/css/index.css"
+        href="/assets/css/global.css"
     >
+
+    <link
+        rel="stylesheet"
+        href="/assets/css/card-create.css"
+    >
+
 </head>
 
-    <body>
+<body>
 
-        <header class="header">
-            <div class="container header-content">
+    <header class="site-header">
 
-                <a href="/" class="logo">
-                    Card Portal
-                </a>
+        <div class="header-content">
 
-                <a href="/" class="button">
-                    Back to Cards
-                </a>
+            <a
+                href="/"
+                class="logo"
+            >
+                Card Portal
+            </a>
 
-            </div>
-        </header>
+            <a
+                href="/"
+                class="button button-secondary"
+            >
+                Voltar para Cards
+            </a>
 
+        </div>
 
-        <main class="container">
+    </header>
+
+    <main class="main-content">
+
+        <div class="create-content">
 
             <section class="page-header">
-                <div>
-                    <h1>Edit Card</h1>
+
+                <div class="page-header-info">
+
+                    <h1>
+                        Editar Card
+                    </h1>
 
                     <p>
-                        Update the card information.
+                        Atualize as informações do card.
                     </p>
+
                 </div>
-            </section>
-
-
-            <section class="form-container">
-
-                <?php
-                require __DIR__ . '/components/card-form.php';
-                ?>
 
             </section>
 
-        </main>
+            <section class="form-section">
 
+                <div class="form-card">
 
-        <script src="/assets/js/card-form.js"></script>
+                    <?php
+                    require __DIR__ . '/components/card-form.php';
+                    ?>
 
-    </body>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <?php require __DIR__ . '/components/footer.php'; ?>
+
+    <script src="/assets/js/card-form.js"></script>
+
+</body>
+
 </html>

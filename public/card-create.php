@@ -9,62 +9,91 @@ $mode = 'create';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
 
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        <title>Add Card - Card Portal</title>
+    <title>Adicionar Card - Card Portal</title>
 
-        <link
-            rel="stylesheet"
-            href="/assets/css/index.css"
-        >
-    </head>
+    <link
+        rel="stylesheet"
+        href="/assets/css/global.css"
+    >
 
-    <body>
+    <link
+        rel="stylesheet"
+        href="/assets/css/card-create.css"
+    >
+</head>
 
-    <header class="header">
-        <div class="container header-content">
+<body>
 
-            <a href="/" class="logo">
+    <header class="site-header">
+        <div class="header-content">
+
+            <a
+                href="/"
+                class="logo"
+            >
                 Card Portal
             </a>
 
-            <a href="/" class="button">
-                Back to Cards
+            <a
+                href="/"
+                class="button button-secondary"
+            >
+                Voltar para Cards
             </a>
 
         </div>
     </header>
 
+    <main class="main-content">
 
-    <main class="container">
+        <div class="create-content">
 
-        <section class="page-header">
-            <div>
-                <h1>Add Card</h1>
-                <p>Create a new card in your collection.</p>
-            </div>
-        </section>
+            <section class="page-header">
 
+                <div class="page-header-info">
 
-        <section class="form-container">
+                    <h1>
+                        Adicionar Card
+                    </h1>
 
-            <?php
-            require __DIR__ . '/components/card-form.php';
-            ?>
+                    <p>
+                        Adicione um novo card à sua coleção.
+                    </p>
 
-        </section>
+                </div>
+
+            </section>
+
+            <section class="form-section">
+
+                <div class="form-card">
+
+                    <?php
+                    require __DIR__ . '/components/card-form.php';
+                    ?>
+
+                </div>
+
+            </section>
+
+        </div>
 
     </main>
 
+    <?php require __DIR__ . '/components/footer.php'; ?>
 
     <script src="/assets/js/card-form.js"></script>
 
-    </body>
+</body>
+
 </html>
