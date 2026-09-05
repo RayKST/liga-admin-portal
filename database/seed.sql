@@ -12,7 +12,7 @@ VALUES
     'magic',
     'dom',
     'Dominaria',
-    'https://cards.scryfall.io/normal/front/1/9/19a46d8d-5c47-4f3c-9e1e-5d6e6f4b8f10.jpg',
+    NULL,
     'Rare'
 ),
 
@@ -22,7 +22,7 @@ VALUES
     'magic',
     'dom',
     'Dominaria',
-    'https://cards.scryfall.io/normal/front/4/9/49c9f8c7-3f6f-4d3d-9b4e-7b7b7b7b7b7b.jpg',
+    NULL,
     'Uncommon'
 ),
 
@@ -32,7 +32,7 @@ VALUES
     'magic',
     'dom',
     'Dominaria',
-    'https://cards.scryfall.io/normal/front/0/4/04d5f7e1-5c7c-4c7d-9c8e-3e6b4e6d4e4e.jpg',
+    'https://cards.scryfall.io/normal/front/5/8/581b7327-3215-4a4f-b4ae-d9d4002ba882.jpg',
     'Common'
 ),
 
@@ -42,7 +42,7 @@ VALUES
     'magic',
     'dom',
     'Dominaria',
-    'https://cards.scryfall.io/normal/front/5/5/55b8f5d2-8e2e-4e3c-8b2e-5d8e7c6b5a4f.jpg',
+    NULL,
     'Rare'
 ),
 
@@ -52,7 +52,7 @@ VALUES
     'magic',
     'war',
     'War of the Spark',
-    'https://cards.scryfall.io/normal/front/1/7/17c6d7e5-7e9c-4e5f-9d5a-5e6f7a8b9c0d.jpg',
+    'https://cards.scryfall.io/normal/front/5/d/5d10b752-d9cb-419d-a5c4-d4ee1acb655e.jpg',
     'Mythic Rare'
 ),
 
@@ -62,7 +62,7 @@ VALUES
     'magic',
     'war',
     'War of the Spark',
-    'https://cards.scryfall.io/normal/front/2/2/22d8c9e7-8f0a-4b1c-9d2e-3f4a5b6c7d8e.jpg',
+    'https://cards.scryfall.io/normal/front/9/8/98b68dea-a7be-4f99-8a50-4c8cf0e0f7a9.jpg',
     'Mythic Rare'
 ),
 
@@ -72,7 +72,7 @@ VALUES
     'magic',
     'war',
     'War of the Spark',
-    'https://cards.scryfall.io/normal/front/3/3/33e9d0f8-9a1b-4c2d-0e3f-4a5b6c7d8e9f.jpg',
+    NULL,
     'Mythic Rare'
 ),
 
@@ -82,7 +82,7 @@ VALUES
     'magic',
     'eld',
     'Throne of Eldraine',
-    'https://cards.scryfall.io/normal/front/4/4/44f0e1a9-0b2c-4d3e-1f4a-5b6c7d8e9f0a.jpg',
+    'https://cards.scryfall.io/normal/front/3/4/3462a3d0-5552-49fa-9eb7-100960c55891.jpg',
     'Mythic Rare'
 ),
 
@@ -92,7 +92,7 @@ VALUES
     'magic',
     'eld',
     'Throne of Eldraine',
-    'https://cards.scryfall.io/normal/front/5/5/55a1f2b0-1c3d-4e4f-2a5b-6c7d8e9f0a1b.jpg',
+    'https://cards.scryfall.io/normal/front/c/2/c2089ec9-0665-448f-bfe9-d181de127814.jpg',
     'Rare'
 ),
 
@@ -102,7 +102,7 @@ VALUES
     'magic',
     'eld',
     'Throne of Eldraine',
-    'https://cards.scryfall.io/normal/front/6/6/66b2f3c1-2d4e-5f5a-3b6c-7d8e9f0a1b2c.jpg',
+    NULL,
     'Rare'
 ),
 
