@@ -54,7 +54,7 @@ requireAuthentication();
 
                 <button
                     id="logout-button"
-                    class="button button-secondary"
+                    class="button button-danger button-secondary"
                     type="button"
                 >
                     Sair
